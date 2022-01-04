@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "191791738970",
+    "project_id": "safaritourapp",
+    "storage_bucket": "safaritourapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191791738970:android:fc86fcfb6b79ca80d7a863",
+        "android_client_info": {
+          "package_name": "com.tana.safaritour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191791738970-8is5i0ceouf0bif7u6dqkoqd8da2bce2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB6qC0OP19de6Rj5wu4Ac2uylCkJCdzbY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191791738970-8is5i0ceouf0bif7u6dqkoqd8da2bce2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
