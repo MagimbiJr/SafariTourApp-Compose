@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tana.safaritour.R
+import com.tana.safaritour.ui.theme.ButtonShape
 import com.tana.safaritour.ui.theme.SafariTourTheme
 
 @Composable
@@ -23,7 +24,8 @@ fun SecondaryButton(
         modifier = modifier
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.button_height)),
-        enabled = enabled
+        enabled = enabled,
+        shape = ButtonShape
     ) {
         Text(text = text)
     }

@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.tana.safaritour.R
+import com.tana.safaritour.ui.theme.ButtonShape
 import com.tana.safaritour.ui.theme.SafariTourTheme
 
 @Composable
@@ -33,7 +34,8 @@ fun PrimaryButton(
             .fillMaxWidth()
             .height(dimensionResource(id = R.dimen.button_height)),
         enabled = enabled,
-        colors = buttonsColors
+        colors = buttonsColors,
+        shape = ButtonShape
     ) {
         Text(text = text)
     }

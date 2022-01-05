@@ -21,26 +21,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    TestFonts()
+
                 }
             }
         }
     }
 }
 
-@Composable
-fun TestFonts() {
-    Column() {
-        Text(text = "Body 1", style = MaterialTheme.typography.body1)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Body 2", style = MaterialTheme.typography.body2)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Caption", style = MaterialTheme.typography.caption)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Button", style = MaterialTheme.typography.button)
-        Spacer(modifier = Modifier.height(8.dp))
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
