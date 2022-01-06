@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import com.tana.safaritour.R
 import com.tana.safaritour.ui.theme.ButtonShape
@@ -37,7 +38,7 @@ fun PrimaryButton(
         colors = buttonsColors,
         shape = ButtonShape
     ) {
-        Text(text = text)
+        Text(text = text.toUpperCase())
     }
 }
 
