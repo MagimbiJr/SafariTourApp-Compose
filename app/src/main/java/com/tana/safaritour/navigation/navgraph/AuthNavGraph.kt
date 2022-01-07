@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.tana.safaritour.authentication.landing.LandingScreen
+import com.tana.safaritour.authentication.signup.ui.SignUpScreen
 import com.tana.safaritour.navigation.routes.AuthRoutes
 
 fun NavGraphBuilder.authNavGraph(
@@ -15,6 +16,6 @@ fun NavGraphBuilder.authNavGraph(
     navigation(AuthRoutes.Landing.route, "authentication",) {
         composable(AuthRoutes.Landing.route) { LandingScreen(navController = navController, systemUiController = systemUiController)}
         composable(AuthRoutes.Login.route) {}
-        composable(AuthRoutes.SignUp.route) {}
+        composable(AuthRoutes.SignUp.route) { SignUpScreen(systemUiController = systemUiController) }
     }
 }

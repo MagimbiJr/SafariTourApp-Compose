@@ -3,7 +3,7 @@ package com.tana.safaritour.navigation.routes
 sealed class AuthRoutes(val route: String) {
     object Landing : AuthRoutes(route = "landing_screen")
     object Login : AuthRoutes(route = "login_screen")
-    object SignUp : AuthRoutes(route = "login_screen")
+    object SignUp : AuthRoutes(route = "signup_screen")
 }
 
 sealed class OtherAppRoutes(val route: String) {

@@ -60,11 +60,12 @@ fun SignUpContent(
         )
         Spacer(modifier = modifier.height(24.dp))
         UserInputs(
-            onNameChanged,
-            modifier,
-            onEmailChanged,
-            onPasswordChanged,
-            onReTypePasswordChanged,
+            signUpUiState = signUpUiState,
+            onNameChanged = onNameChanged,
+            modifier = modifier,
+            onEmailChanged = onEmailChanged,
+            onPasswordChanged = onPasswordChanged,
+            onReTypePasswordChanged = onReTypePasswordChanged,
             onGoButtonClicked = onSignUpButtonClicked
         )
         Spacer(modifier = modifier.height(24.dp))
@@ -105,6 +106,7 @@ fun ActionButtons(
 
 @Composable
 fun UserInputs(
+    signUpUiState: SignUpUiState,
     onNameChanged: (String) -> Unit,
     modifier: Modifier,
     onEmailChanged: (String) -> Unit,
@@ -115,12 +117,12 @@ fun UserInputs(
     val focusManager = LocalFocusManager.current
 
     STTextField(
-        text = "",
+        text = signUpUiState.credentials.name,
         onTextChange = onNameChanged,
         label = "Name",
         isError = false,
         keyboardOptions = KeyboardOptions(
-            capitalization = KeyboardCapitalization.Sentences,
+            capitalization = KeyboardCapitalization.Words,
             imeAction = ImeAction.Next
         ),
         keyboardActions = KeyboardActions(
@@ -131,7 +133,7 @@ fun UserInputs(
     )
     Spacer(modifier = modifier.height(12.dp))
     STTextField(
-        text = "",
+        text = signUpUiState.credentials.email,
         onTextChange = onEmailChanged,
         label = "Email",
         isError = false,
@@ -146,7 +148,7 @@ fun UserInputs(
     )
     Spacer(modifier = modifier.height(12.dp))
     STTextField(
-        text = "",
+        text = signUpUiState.credentials.password,
         onTextChange = onPasswordChanged,
         label = "Password",
         isError = false,
@@ -161,7 +163,7 @@ fun UserInputs(
     )
     Spacer(modifier = modifier.height(12.dp))
     STTextField(
-        text = "",
+        text = signUpUiState.credentials.reTypePassword,
         onTextChange = onReTypePasswordChanged,
         label = "Verify password",
         isError = false,
