@@ -41,7 +41,8 @@ fun STTextField(
             onValueChange = onTextChange,
             modifier = modifier
                 .fillMaxWidth()
-                .height(dimensionResource(id = R.dimen.text_field_height)),
+                //.height(dimensionResource(id = R.dimen.text_field_height))
+                .height(60.dp),
             label = { Text(text = label) },
             trailingIcon = trailingIcon,
             isError = isError,
