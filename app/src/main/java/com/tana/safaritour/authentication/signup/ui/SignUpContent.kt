@@ -27,7 +27,7 @@ import com.tana.safaritour.ui.theme.SafariTourTheme
 
 @Composable
 fun SignUpContent(
-    //signUpUiState: SignUpUiState
+    signUpUiState: SignUpUiState,
     onNameChanged: (String) -> Unit,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
@@ -186,9 +186,11 @@ fun UserInputs(
 
 @Composable
 fun SignUpContentPreview() {
+    val uiState = SignUpUiState.Initial
     SafariTourTheme {
         Surface() {
             SignUpContent(
+                signUpUiState = uiState,
                 onNameChanged = {},
                 onEmailChanged = {},
                 onPasswordChanged = {},
