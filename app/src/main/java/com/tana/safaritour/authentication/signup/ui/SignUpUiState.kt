@@ -9,11 +9,15 @@ sealed class SignUpUiState(
     object Initial : SignUpUiState(credentials = SignUpCredentials())
 
     data class Active(
-        override val credentials: SignUpCredentials
+        override val credentials: SignUpCredentials,
+        val nameInputErrorMessage: String? = null,
+        val emailInputErrorMessage: String? = null,
+        val passwordInputErrorMessage: String? = null,
+        val reTypePasswordInputErrorMessage: String? = null
     ) : SignUpUiState(credentials = credentials)
 
     data class Submitting(
-        override val credentials: SignUpCredentials
+        override val credentials: SignUpCredentials,
     ) : SignUpUiState(credentials = credentials, buttonEnabled = false)
 
     data class SubmissionError(
@@ -21,11 +25,16 @@ sealed class SignUpUiState(
         val errorMessage: String
     ) : SignUpUiState(credentials = credentials)
 
-    data class InputErrors(
-        override val credentials: SignUpCredentials,
-        val nameInputErrorMessage: String?,
-        val emailInputErrorMessage: String?,
-        val passwordInputErrorMessage: String?,
-        val reTypePasswordInputErrorMessage: String?
-    ) : SignUpUiState(credentials = credentials)
+    object Completed : SignUpUiState(
+        credentials = SignUpCredentials(),
+        buttonEnabled = false
+    )
+
+//    data class InputErrors(
+//        override val credentials: SignUpCredentials,
+//        val nameInputErrorMessage: String? = null,
+//        val emailInputErrorMessage: String? = null,
+//        val passwordInputErrorMessage: String? = null,
+//        val reTypePasswordInputErrorMessage: String? = null
+//    ) : SignUpUiState(credentials = credentials)
 }

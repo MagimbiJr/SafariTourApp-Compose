@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -20,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tana.safaritour.R
+import com.tana.safaritour.authentication.signup.data.SignUpCredentials
 import com.tana.safaritour.ui.components.buttons.FederationSignButton
 import com.tana.safaritour.ui.components.buttons.PrimaryButton
 import com.tana.safaritour.ui.components.textfield.STTextField
@@ -35,6 +37,38 @@ fun SignUpContent(
     onSignUpButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Contents(
+            modifier,
+            signUpUiState,
+            onNameChanged,
+            onEmailChanged,
+            onPasswordChanged,
+            onReTypePasswordChanged,
+            onSignUpButtonClicked,
+            onLoginButtonClicked
+        )
+        if (signUpUiState is SignUpUiState.Submitting) {
+            CircularProgressIndicator()
+        }
+    }
+}
+
+@Composable
+fun Contents(
+    modifier: Modifier,
+    signUpUiState: SignUpUiState,
+    onNameChanged: (String) -> Unit,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onReTypePasswordChanged: (String) -> Unit,
+    onSignUpButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -66,15 +100,25 @@ fun SignUpContent(
             onEmailChanged = onEmailChanged,
             onPasswordChanged = onPasswordChanged,
             onReTypePasswordChanged = onReTypePasswordChanged,
-            onGoButtonClicked = onSignUpButtonClicked
+            onGoButtonClicked = onSignUpButtonClicked,
+            nameInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.nameInputErrorMessage,
+            emailInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.emailInputErrorMessage,
+            passwordInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.passwordInputErrorMessage,
+            reTypePasswordInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.reTypePasswordInputErrorMessage
         )
         Spacer(modifier = modifier.height(24.dp))
-        ActionButtons(onSignUpButtonClicked, modifier, onLoginButtonClicked)
+        ActionButtons(
+            signUpUiState,
+            onSignUpButtonClicked,
+            modifier,
+            onLoginButtonClicked
+        )
     }
 }
 
 @Composable
 fun ActionButtons(
+    signUpUiState: SignUpUiState,
     onSignUpButtonClicked: () -> Unit,
     modifier: Modifier,
     onLoginButtonClicked: () -> Unit
@@ -82,7 +126,7 @@ fun ActionButtons(
     PrimaryButton(
         text = "Create account",
         onClick = onSignUpButtonClicked,
-        enabled = true
+        enabled = signUpUiState.buttonEnabled
     )
     Spacer(modifier = modifier.height(12.dp))
     Row(
@@ -112,7 +156,11 @@ fun UserInputs(
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onReTypePasswordChanged: (String) -> Unit,
-    onGoButtonClicked: () -> Unit
+    onGoButtonClicked: () -> Unit,
+    nameInputErrorMessage: String?,
+    emailInputErrorMessage: String?,
+    passwordInputErrorMessage: String?,
+    reTypePasswordInputErrorMessage: String?
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -120,7 +168,7 @@ fun UserInputs(
         text = signUpUiState.credentials.name,
         onTextChange = onNameChanged,
         label = "Name",
-        isError = false,
+        errorMessage = nameInputErrorMessage,
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Words,
             imeAction = ImeAction.Next
@@ -136,7 +184,7 @@ fun UserInputs(
         text = signUpUiState.credentials.email,
         onTextChange = onEmailChanged,
         label = "Email",
-        isError = false,
+        errorMessage = emailInputErrorMessage,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Next
         ),
@@ -151,7 +199,7 @@ fun UserInputs(
         text = signUpUiState.credentials.password,
         onTextChange = onPasswordChanged,
         label = "Password",
-        isError = false,
+        errorMessage = passwordInputErrorMessage,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Next
         ),
@@ -166,7 +214,7 @@ fun UserInputs(
         text = signUpUiState.credentials.reTypePassword,
         onTextChange = onReTypePasswordChanged,
         label = "Verify password",
-        isError = false,
+        errorMessage = reTypePasswordInputErrorMessage,
         keyboardOptions = KeyboardOptions(
             imeAction = ImeAction.Go
         ),

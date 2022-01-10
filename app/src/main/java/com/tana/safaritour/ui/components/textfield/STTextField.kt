@@ -25,7 +25,6 @@ fun STTextField(
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String,
-    isError: Boolean,
     errorMessage: String? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -45,7 +44,7 @@ fun STTextField(
                 .height(60.dp),
             label = { Text(text = label) },
             trailingIcon = trailingIcon,
-            isError = isError,
+            isError = (errorMessage != null),
             visualTransformation = visualTransformation,
             keyboardOptions = keyboardOptions,
             keyboardActions = keyboardActions,
@@ -77,6 +76,10 @@ fun STTextField(
 @Composable
 fun TextFieldPreview() {
     SafariTourTheme() {
-        STTextField(text = "", onTextChange = {}, label = "Label", isError = false)
+        STTextField(
+            text = "",
+            onTextChange = {},
+            label = "Label"
+        )
     }
 }

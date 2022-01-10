@@ -16,6 +16,11 @@ fun NavGraphBuilder.authNavGraph(
     navigation(AuthRoutes.Landing.route, "authentication",) {
         composable(AuthRoutes.Landing.route) { LandingScreen(navController = navController, systemUiController = systemUiController)}
         composable(AuthRoutes.Login.route) {}
-        composable(AuthRoutes.SignUp.route) { SignUpScreen(systemUiController = systemUiController) }
+        composable(AuthRoutes.SignUp.route) {
+            SignUpScreen(
+                systemUiController = systemUiController,
+                navHostController = navController
+            )
+        }
     }
 }
