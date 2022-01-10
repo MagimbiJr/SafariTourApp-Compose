@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.tana.safaritour.R
 import com.tana.safaritour.ui.theme.ButtonShape
 import com.tana.safaritour.ui.theme.SafariTourTheme
@@ -33,7 +34,8 @@ fun PrimaryButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.button_height)),
+            //.height(dimensionResource(id = R.dimen.button_height))
+            .height(50.dp),
         enabled = enabled,
         colors = buttonsColors,
         shape = ButtonShape
