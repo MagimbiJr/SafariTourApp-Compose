@@ -3,17 +3,24 @@ package com.tana.safaritour.authentication.login.ui
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tana.safaritour.R
+import com.tana.safaritour.authentication.login.data.LoginCredential
 import com.tana.safaritour.ui.components.buttons.FederationSignButton
 import com.tana.safaritour.ui.components.buttons.PrimaryButton
 import com.tana.safaritour.ui.components.textfield.STTextField
@@ -61,9 +68,17 @@ fun LoginContent(
                 loginUiState = loginUiState,
                 onEmailChanged = onEmailChanged,
                 onPasswordChanged = onPasswordChanged,
+                onLoginButtonClicked = onLoginButtonClicked,
                 emailInputErrorMessage = (loginUiState as? LoginUiState)?.emailInputErrorMessage,
                 passwordInputErrorMessage = (loginUiState as? LoginUiState)?.passwordInputErrorMessage,
             )
+            if (loginUiState.errorMessage != null) {
+                Spacer(modifier = modifier.height(8.dp))
+                Text(
+                    text = loginUiState.errorMessage,
+                    color = MaterialTheme.colors.error
+                )
+            }
             Spacer(modifier = modifier.height(24.dp))
             LoginActionButtons(
                 modifier = modifier,
@@ -110,20 +125,39 @@ fun LoginUserInput(
     loginUiState: LoginUiState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
+    onLoginButtonClicked: () -> Unit,
     emailInputErrorMessage: String?,
     passwordInputErrorMessage: String?,
 ) {
+    val focusManager = LocalFocusManager.current
     STTextField(
         text = loginUiState.credentials.email,
         onTextChange = onEmailChanged,
         label = "Email",
-        errorMessage = emailInputErrorMessage
+        errorMessage = emailInputErrorMessage,
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Next
+        ),
+        keyboardActions = KeyboardActions(
+            onNext = {
+                focusManager.moveFocus(FocusDirection.Down)
+            }
+        )
     )
     STTextField(
         text = loginUiState.credentials.password,
         onTextChange = onPasswordChanged,
         label = "Password",
-        errorMessage = passwordInputErrorMessage
+        errorMessage = passwordInputErrorMessage,
+        visualTransformation = PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Go
+        ),
+        keyboardActions = KeyboardActions(
+            onGo = {
+                onLoginButtonClicked()
+            }
+        )
     )
 }
 
@@ -140,7 +174,11 @@ fun LoginUserInput(
 
 @Composable
 fun LoginContentPreview() {
-    val uiState = LoginUiState()
+    val uiState = LoginUiState(
+        credentials = LoginCredential(password = "1234567"),
+        errorMessage = "Something went wrong",
+
+    )
     SafariTourTheme() {
         Surface {
             LoginContent(
