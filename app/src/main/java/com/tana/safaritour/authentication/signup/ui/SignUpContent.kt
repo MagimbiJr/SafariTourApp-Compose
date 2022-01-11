@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tana.safaritour.R
-import com.tana.safaritour.authentication.signup.data.SignUpCredentials
 import com.tana.safaritour.ui.components.buttons.FederationSignButton
 import com.tana.safaritour.ui.components.buttons.PrimaryButton
 import com.tana.safaritour.ui.components.textfield.STTextField
@@ -53,7 +52,7 @@ fun SignUpContent(
             onSignUpButtonClicked,
             onLoginButtonClicked
         )
-        if (signUpUiState is SignUpUiState.Submitting) {
+        if (signUpUiState.submitting) {
             CircularProgressIndicator()
         }
     }
@@ -101,10 +100,10 @@ fun Contents(
             onPasswordChanged = onPasswordChanged,
             onReTypePasswordChanged = onReTypePasswordChanged,
             onGoButtonClicked = onSignUpButtonClicked,
-            nameInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.nameInputErrorMessage,
-            emailInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.emailInputErrorMessage,
-            passwordInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.passwordInputErrorMessage,
-            reTypePasswordInputErrorMessage = (signUpUiState as? SignUpUiState.Active)?.reTypePasswordInputErrorMessage
+            nameInputErrorMessage = (signUpUiState as? SignUpUiState)?.nameInputErrorMessage,
+            emailInputErrorMessage = (signUpUiState as? SignUpUiState)?.emailInputErrorMessage,
+            passwordInputErrorMessage = (signUpUiState as? SignUpUiState)?.passwordInputErrorMessage,
+            reTypePasswordInputErrorMessage = (signUpUiState as? SignUpUiState)?.reTypePasswordInputErrorMessage
         )
         Spacer(modifier = modifier.height(24.dp))
         ActionButtons(
@@ -126,7 +125,7 @@ fun ActionButtons(
     PrimaryButton(
         text = "Create account",
         onClick = onSignUpButtonClicked,
-        enabled = signUpUiState.buttonEnabled
+        enabled = true
     )
     Spacer(modifier = modifier.height(12.dp))
     Row(
@@ -236,7 +235,7 @@ fun UserInputs(
 
 @Composable
 fun SignUpContentPreview() {
-    val uiState = SignUpUiState.Initial
+    val uiState = SignUpUiState()
     SafariTourTheme {
         Surface() {
             SignUpContent(

@@ -3,6 +3,7 @@ package com.tana.safaritour.di
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tana.safaritour.authentication.signup.data.RegistrationRepository
 import dagger.Module
 import dagger.Provides
@@ -18,11 +19,13 @@ object SafariTourModule {
     @Singleton
     fun provideRepository(
         firebaseAuth: FirebaseAuth,
+        database: FirebaseFirestore,
         currentUser: MutableLiveData<FirebaseUser?>,
         errorMessage: MutableLiveData<String?>
     ): RegistrationRepository {
         return RegistrationRepository(
             auth = firebaseAuth,
+            database = database,
             currentUser = currentUser,
             errorMessage = errorMessage
         )
@@ -31,6 +34,11 @@ object SafariTourModule {
     @Provides
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
+    }
+
+    @Provides
+    fun provideFirestoreDb(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
     }
 
     @Provides
