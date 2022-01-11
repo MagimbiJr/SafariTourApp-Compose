@@ -1,8 +1,10 @@
 package com.tana.safaritour.authentication.signup.ui
 
+import android.widget.Toast
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -18,6 +20,7 @@ fun SignUpScreen(
 ) {
     systemUiController.setSystemBarsColor(color = MaterialTheme.colors.background)
     val signUpUiState = viewModel.uiState.collectAsState()
+    val context = LocalContext.current
     SignUpContent(
         signUpUiState = signUpUiState.value,
         onNameChanged = viewModel::nameChanged,
@@ -26,7 +29,8 @@ fun SignUpScreen(
         onReTypePasswordChanged = viewModel::reTypePasswordChanged,
         onSignUpButtonClicked = {
             viewModel.signUpButtonClicked()
-            //navHostController.navigate(BottomNavRoutes.Home.route)
+            Toast.makeText(context, "User created successful", Toast.LENGTH_SHORT).show()
+            navHostController.navigate(BottomNavRoutes.Home.route)
         },
         onLoginButtonClicked = {
             //viewModel.loginButtonClicked()

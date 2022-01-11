@@ -4,5 +4,6 @@ data class SignUpCredentials(
     val name: String = "",
     val email: String = "",
     val password: String = "",
-    val reTypePassword: String = ""
+    val reTypePassword: String = "",
+    val profileDp: String = ""
 )
