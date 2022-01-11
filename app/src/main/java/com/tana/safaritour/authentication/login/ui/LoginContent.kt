@@ -22,6 +22,11 @@ import com.tana.safaritour.ui.theme.SafariTourTheme
 
 @Composable
 fun LoginContent(
+    loginUiState: LoginUiState,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onLoginButtonClicked: () -> Unit,
+    onCreateAccountButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -52,16 +57,34 @@ fun LoginContent(
                 style = MaterialTheme.typography.h6,
             )
             Spacer(modifier = modifier.height(24.dp))
-            LoginUserInput()
+            LoginUserInput(
+                loginUiState = loginUiState,
+                onEmailChanged = onEmailChanged,
+                onPasswordChanged = onPasswordChanged,
+                emailInputErrorMessage = (loginUiState as? LoginUiState)?.emailInputErrorMessage,
+                passwordInputErrorMessage = (loginUiState as? LoginUiState)?.passwordInputErrorMessage,
+            )
             Spacer(modifier = modifier.height(24.dp))
-            LoginActionButtons(modifier)
+            LoginActionButtons(
+                modifier = modifier,
+                onLoginButtonClicked = onLoginButtonClicked,
+                onCreateAccountButtonClicked = onCreateAccountButtonClicked,
+            )
         }
     }
 }
 
 @Composable
-fun LoginActionButtons(modifier: Modifier) {
-    PrimaryButton(text = "Login", onClick = { /*TODO*/ }, enabled = true)
+fun LoginActionButtons(
+    modifier: Modifier,
+    onLoginButtonClicked: () -> Unit,
+    onCreateAccountButtonClicked: () -> Unit,
+) {
+    PrimaryButton(
+        text = "Login",
+        onClick = onLoginButtonClicked,
+        enabled = true
+    )
     Spacer(modifier = modifier.height(12.dp))
     Row(
         modifier = modifier
@@ -74,7 +97,7 @@ fun LoginActionButtons(modifier: Modifier) {
         Text(
             text = "Create account",
             modifier = modifier
-                .clickable { },
+                .clickable { onCreateAccountButtonClicked() },
             fontWeight = FontWeight.Bold,
             fontSize = 17.sp,
             color = MaterialTheme.colors.primary
@@ -83,16 +106,24 @@ fun LoginActionButtons(modifier: Modifier) {
 }
 
 @Composable
-fun LoginUserInput() {
+fun LoginUserInput(
+    loginUiState: LoginUiState,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    emailInputErrorMessage: String?,
+    passwordInputErrorMessage: String?,
+) {
     STTextField(
-        text = "",
-        onTextChange = {},
-        label = "Email"
+        text = loginUiState.credentials.email,
+        onTextChange = onEmailChanged,
+        label = "Email",
+        errorMessage = emailInputErrorMessage
     )
     STTextField(
-        text = "",
-        onTextChange = {},
-        label = "Password"
+        text = loginUiState.credentials.password,
+        onTextChange = onPasswordChanged,
+        label = "Password",
+        errorMessage = passwordInputErrorMessage
     )
 }
 
@@ -109,9 +140,16 @@ fun LoginUserInput() {
 
 @Composable
 fun LoginContentPreview() {
+    val uiState = LoginUiState()
     SafariTourTheme() {
         Surface {
-            LoginContent()
+            LoginContent(
+                loginUiState = uiState,
+                onEmailChanged = {},
+                onPasswordChanged = {},
+                onLoginButtonClicked = {},
+                onCreateAccountButtonClicked = {}
+            )
         }
     }
 }
