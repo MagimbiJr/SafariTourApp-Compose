@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val systemUiController = rememberSystemUiController()
+            val scaffoldState  = rememberScaffoldState()
+            val coroutineScope = rememberCoroutineScope()
+
             SafariTourTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -33,7 +37,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     SafariTourNavGraph(
                         navController = navController,
-                        systemUiController = systemUiController
+                        systemUiController = systemUiController,
+                        scaffoldState = scaffoldState,
+                        coroutineScope = coroutineScope
                     )
                 }
             }

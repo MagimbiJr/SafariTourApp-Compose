@@ -5,13 +5,19 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseUser
 import com.tana.safaritour.authentication.signup.data.RegistrationRepository
 import com.tana.safaritour.authentication.signup.data.SignUpCredentials
+import com.tana.safaritour.navigation.routes.AuthRoutes
+import com.tana.safaritour.navigation.routes.BottomNavRoutes
+import com.tana.safaritour.utils.AppUiEvents
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,11 +25,14 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val repository: RegistrationRepository,
 ) : ViewModel() {
+    private val _appUiEvents = Channel<AppUiEvents>()
+    val appUiEvents = _appUiEvents.receiveAsFlow()
     private val _uiState = MutableStateFlow(SignUpUiState())
     val uiState = _uiState.asStateFlow()
     val currentUser = repository.currentUser
-    val errorMessage = repository.errorMessage
+    val errorMessage = repository.errorMessage.value
     val showSignUpSnackbar = MutableStateFlow(false)
+    var navigate = false
 
     /**
      * Event requested for changing name in the name text field
@@ -82,45 +91,47 @@ class SignUpViewModel @Inject constructor(
      * A function that handles submission. When user click Create account button
      */
     fun signUpButtonClicked() {
+        _uiState.value = _uiState.value.copy(
+            submitting = true
+        )
+
         val currentCredentials = _uiState.value.credentials
 
         verifyInputs(currentCredentials)
-        if (
-            currentCredentials.name.isBlank() || currentCredentials.email.isBlank() ||
-            currentCredentials.password.isBlank() || currentCredentials.reTypePassword.isBlank()
-        ) {
-            _uiState.value = _uiState.value.copy(
-                submitting = false
-            )
-        } else {
-            _uiState.value = _uiState.value.copy(
-                submitting = true
+
+        if (currentCredentials.email.isNotBlank() && currentCredentials.password.isNotBlank()) {
+            repository.createUser(
+                currentCredentials.name.trim(),
+                currentCredentials.email.trim(),
+                currentCredentials.password.trim(),
+                currentCredentials.profileDp.trim()
             )
         }
-        repository.createUser(credentials = currentCredentials)
-        if (currentUser.value != null) {
-            _uiState.value = _uiState.value.copy(
-                submitting = false
-            )
-        } else {
-            _uiState.value = _uiState.value.copy(
-                submitting = true
-            )
+        Log.d("TAG", "signUpButtonClicked: ${repository.errorMessage.value}")
+        _uiState.value = _uiState.value.copy(
+            errorMessage = repository.errorMessage.value
+        )
+        _uiState.value = _uiState.value.copy(
+            submitting = false
+        )
+
+        if (repository.currentUser.value != null) {
+            viewModelScope.launch {
+                _appUiEvents.send(AppUiEvents.Navigate(BottomNavRoutes.Home.route))
+            }
         }
-        showSignUpSnackbar.value = true
     }
 
     /**
      * A function that navigate user to login screen. If they already have account ant click login button
      */
     fun loginButtonClicked() {
-
+        viewModelScope.launch {
+            _appUiEvents.send(AppUiEvents.Navigate(AuthRoutes.Login.route))
+        }
     }
 
     private fun verifyInputs(credentials: SignUpCredentials) {
-        _uiState.value = _uiState.value.copy(
-            submitting = false
-        )
         if (credentials.name.isBlank()) {
             _uiState.value = _uiState.value.copy(
                 nameInputErrorMessage = "Please enter name."

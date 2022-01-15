@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tana.safaritour.R
 import com.tana.safaritour.ui.theme.ButtonShape
+import com.tana.safaritour.ui.theme.Cultured
 import com.tana.safaritour.ui.theme.SafariTourTheme
 
 @Composable
@@ -25,14 +26,15 @@ fun SecondaryButton(
     modifier: Modifier = Modifier,
     backgroundColor: Color = Color.Transparent
 ) {
-    val buttonColors = ButtonDefaults.buttonColors(
-        backgroundColor = backgroundColor
+    val buttonColors = buttonColors(
+        backgroundColor = backgroundColor,
+        contentColor = Cultured
     )
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .height(dimensionResource(id = R.dimen.button_height))
+            .height(50.dp)
             .border(width = (2.dp), color = MaterialTheme.colors.primary, shape = ButtonShape),
         enabled = enabled,
         shape = ButtonShape,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -41,51 +42,74 @@ fun LoginContent(
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Login",
-                style = MaterialTheme.typography.h4
-            )
-            Spacer(modifier = modifier.height(64.dp))
-            FederationSignButton(
-                text = "Sign in with google",
-                image = R.drawable.google_logo,
-                onClick = { /*TODO*/ }
-            )
-            Spacer(modifier = modifier.height(24.dp))
-            Text(
-                text = "Or",
-                style = MaterialTheme.typography.h6,
-            )
-            Spacer(modifier = modifier.height(24.dp))
-            LoginUserInput(
+        if (loginUiState.submitting) {
+            CircularProgressIndicator()
+        } else {
+            Contents(
+                modifier = modifier,
                 loginUiState = loginUiState,
                 onEmailChanged = onEmailChanged,
                 onPasswordChanged = onPasswordChanged,
                 onLoginButtonClicked = onLoginButtonClicked,
-                emailInputErrorMessage = (loginUiState as? LoginUiState)?.emailInputErrorMessage,
-                passwordInputErrorMessage = (loginUiState as? LoginUiState)?.passwordInputErrorMessage,
-            )
-            if (loginUiState.errorMessage != null) {
-                Spacer(modifier = modifier.height(8.dp))
-                Text(
-                    text = loginUiState.errorMessage,
-                    color = MaterialTheme.colors.error
-                )
-            }
-            Spacer(modifier = modifier.height(24.dp))
-            LoginActionButtons(
-                modifier = modifier,
-                onLoginButtonClicked = onLoginButtonClicked,
-                onCreateAccountButtonClicked = onCreateAccountButtonClicked,
+                onCreateAccountButtonClicked = onCreateAccountButtonClicked
             )
         }
+    }
+}
+
+@Composable
+private fun Contents(
+    modifier: Modifier,
+    loginUiState: LoginUiState,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onLoginButtonClicked: () -> Unit,
+    onCreateAccountButtonClicked: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Login",
+            style = MaterialTheme.typography.h4
+        )
+        Spacer(modifier = modifier.height(64.dp))
+        FederationSignButton(
+            text = "Sign in with google",
+            image = R.drawable.google_logo,
+            onClick = { /*TODO*/ }
+        )
+        Spacer(modifier = modifier.height(24.dp))
+        Text(
+            text = "Or",
+            style = MaterialTheme.typography.h6,
+        )
+        Spacer(modifier = modifier.height(24.dp))
+        LoginUserInput(
+            loginUiState = loginUiState,
+            onEmailChanged = onEmailChanged,
+            onPasswordChanged = onPasswordChanged,
+            onLoginButtonClicked = onLoginButtonClicked,
+            emailInputErrorMessage = (loginUiState as? LoginUiState)?.emailInputErrorMessage,
+            passwordInputErrorMessage = (loginUiState as? LoginUiState)?.passwordInputErrorMessage,
+        )
+        if (loginUiState.errorMessage != null) {
+            Spacer(modifier = modifier.height(8.dp))
+            Text(
+                text = loginUiState.errorMessage,
+                color = MaterialTheme.colors.error
+            )
+        }
+        Spacer(modifier = modifier.height(24.dp))
+        LoginActionButtons(
+            modifier = modifier,
+            onLoginButtonClicked = onLoginButtonClicked,
+            onCreateAccountButtonClicked = onCreateAccountButtonClicked,
+        )
     }
 }
 

@@ -21,6 +21,7 @@ import com.tana.safaritour.R
 import com.tana.safaritour.navigation.routes.AuthRoutes
 import com.tana.safaritour.ui.components.buttons.PrimaryButton
 import com.tana.safaritour.ui.components.buttons.SecondaryButton
+import com.tana.safaritour.ui.theme.Cultured
 import com.tana.safaritour.ui.theme.RussianViolet
 
 @Composable
@@ -61,6 +62,7 @@ fun LandingScreen(
                 Text(
                     text = "Safari Tours",
                     style = MaterialTheme.typography.h3,
+                    color = Cultured
                 )
                 Spacer(modifier = modifier.height(8.dp))
                 Text(
@@ -68,7 +70,8 @@ fun LandingScreen(
                             "sceneries and nature.",
                     textAlign = TextAlign.Center,
                     fontSize = 17.sp,
-                    fontWeight = FontWeight.W500
+                    fontWeight = FontWeight.W500,
+                    color = Cultured
                 )
             }
             PrimaryButton(

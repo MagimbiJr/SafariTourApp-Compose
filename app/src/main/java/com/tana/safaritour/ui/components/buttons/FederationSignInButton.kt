@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -33,8 +34,8 @@ fun FederationSignButton(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            //.height(dimensionResource(id = R.dimen.button_height))
-            .height(50.dp),
+            .height(50.dp)
+            .shadow(8.dp, shape = ButtonShape),
         colors = buttonColors,
         shape = ButtonShape
     ) {

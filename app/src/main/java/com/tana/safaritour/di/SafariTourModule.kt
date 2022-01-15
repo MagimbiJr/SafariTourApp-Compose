@@ -1,6 +1,9 @@
 package com.tana.safaritour.di
 
+import androidx.compose.runtime.Composable
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,4 +53,8 @@ object SafariTourModule {
     fun provideCurrentUser(): MutableLiveData<FirebaseUser?> {
         return MutableLiveData()
     }
+
+//    @Provides
+//    @Composable
+//    fun provideNavController(): NavHostController = rememberNavController()
 }

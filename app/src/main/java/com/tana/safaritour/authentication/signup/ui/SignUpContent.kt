@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -105,6 +106,13 @@ fun Contents(
             passwordInputErrorMessage = (signUpUiState as? SignUpUiState)?.passwordInputErrorMessage,
             reTypePasswordInputErrorMessage = (signUpUiState as? SignUpUiState)?.reTypePasswordInputErrorMessage
         )
+        if (signUpUiState.errorMessage != null) {
+            Spacer(modifier = modifier.height(8.dp))
+            Text(
+                text = signUpUiState.errorMessage,
+                color = MaterialTheme.colors.error
+            )
+        }
         Spacer(modifier = modifier.height(24.dp))
         ActionButtons(
             signUpUiState,
@@ -206,7 +214,8 @@ fun UserInputs(
             onNext = {
                 focusManager.moveFocus(FocusDirection.Down)
             }
-        )
+        ),
+        visualTransformation = PasswordVisualTransformation()
     )
     Spacer(modifier = modifier.height(12.dp))
     STTextField(
@@ -219,7 +228,8 @@ fun UserInputs(
         ),
         keyboardActions = KeyboardActions(
             onGo = { onGoButtonClicked() }
-        )
+        ),
+        visualTransformation = PasswordVisualTransformation()
     )
 }
 
