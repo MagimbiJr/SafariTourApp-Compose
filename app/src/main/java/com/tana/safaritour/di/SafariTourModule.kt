@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tana.safaritour.authentication.signup.data.RegistrationRepository
+import com.tana.safaritour.bottom_nav.home.data.PlacesRepository
+import com.tana.safaritour.bottom_nav.home.data.PlacesRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,6 +34,12 @@ object SafariTourModule {
             currentUser = currentUser,
             errorMessage = errorMessage
         )
+    }
+
+    @Provides
+    @Singleton
+    fun providePlacesRepository(db: FirebaseFirestore): PlacesRepository {
+        return PlacesRepositoryImpl(db = db)
     }
 
     @Provides
