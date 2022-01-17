@@ -17,7 +17,7 @@ fun SafariTourNavGraph(
 ) {
     val auth = FirebaseAuth.getInstance()
     //val isLoggedIn = (auth.currentUser != null)
-    val route = if (auth.currentUser == null) {
+    val route = if (auth.currentUser != null) {
         "bottom_navigation"
     } else {
         "authentication"
