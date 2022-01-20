@@ -1,43 +1,47 @@
 package com.tana.safaritour.bottom_nav.home.data
 
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Source
+import com.google.firebase.firestore.core.UserData
 import com.tana.safaritour.utils.FirestoreResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import javax.inject.Inject
 
-class PlacesRepositoryImpl(private val db: FirebaseFirestore) : PlacesRepository {
+class PlacesRepositoryImpl(
+    private val db: FirebaseFirestore,
+    override val places: MutableLiveData<List<Place>>,
+    override val loading: MutableLiveData<Boolean>,
+    override val popularPlaces: MutableLiveData<List<Place>>,
+    //override val errorMessage: MutableLiveData<String>
+) : PlacesRepository {
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun places(): Flow<FirestoreResponse> = callbackFlow {
-        val collection = db.collection("places")
-        val snapshotListener = collection.addSnapshotListener { value, error ->
-            val response = if (error == null) {
-                FirestoreResponse.OnSuccess(querySnapshot = value)
-            } else {
-                FirestoreResponse.OnError(error)
+    override suspend fun places() {
+        loading.value = true
+        db.collection("places")
+            .get().addOnSuccessListener { result ->
+                val placesResult = result.toObjects(Place::class.java)
+
+                places.value = placesResult
+            }.addOnFailureListener { exception ->
+                Log.d("TAG", "places: ${exception.localizedMessage}")
             }
-            offer(response)
-        }
-        awaitClose {
-            snapshotListener.remove()
-        }
+        loading.value = false
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun popularPlaces(): Flow<FirestoreResponse> = callbackFlow {
-        val collection = db.collection("places")
-        val snapshotListener = collection.addSnapshotListener { value, error ->
-            val response = if (error == null) {
-                FirestoreResponse.OnSuccess(querySnapshot = value)
-            } else {
-                FirestoreResponse.OnError(exception = error)
+    override suspend fun popularPlaces() {
+        val source = Source.CACHE
+        db.collection("places")
+            .get(source).addOnSuccessListener { result ->
+                popularPlaces.value = result.toObjects(Place::class.java)
+            }.addOnFailureListener { exception ->
+                Log.d("TAG", "popularPlaces: ${exception.localizedMessage}")
             }
-            offer(response)
-        }
-        awaitClose {
-            snapshotListener.remove()
-        }
     }
 }

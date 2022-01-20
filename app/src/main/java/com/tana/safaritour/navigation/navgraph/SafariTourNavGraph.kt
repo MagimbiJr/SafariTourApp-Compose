@@ -23,7 +23,7 @@ fun SafariTourNavGraph(
         "authentication"
     }
     NavHost(navController = navController, startDestination = route) {
-        bottomNavGraph(navController = navController)
+        bottomNavGraph(systemUiController = systemUiController)
         authNavGraph(
             navController = navController,
             systemUiController = systemUiController,
