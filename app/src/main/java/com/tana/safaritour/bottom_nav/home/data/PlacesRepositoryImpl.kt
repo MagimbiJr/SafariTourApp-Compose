@@ -17,13 +17,13 @@ import javax.inject.Inject
 class PlacesRepositoryImpl(
     private val db: FirebaseFirestore,
     override val places: MutableLiveData<List<Place>>,
-    override val loading: MutableLiveData<Boolean>,
+    override var loading: Boolean,
     override val popularPlaces: MutableLiveData<List<Place>>,
     //override val errorMessage: MutableLiveData<String>
 ) : PlacesRepository {
 
     override suspend fun places() {
-        loading.value = true
+        loading = true
         db.collection("places")
             .get().addOnSuccessListener { result ->
                 val placesResult = result.toObjects(Place::class.java)
@@ -32,7 +32,7 @@ class PlacesRepositoryImpl(
             }.addOnFailureListener { exception ->
                 Log.d("TAG", "places: ${exception.localizedMessage}")
             }
-        loading.value = false
+        loading = false
     }
 
     override suspend fun popularPlaces() {

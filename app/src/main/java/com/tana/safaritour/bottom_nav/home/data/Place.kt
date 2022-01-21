@@ -1,6 +1,7 @@
 package com.tana.safaritour.bottom_nav.home.data
 
 data class Place(
+    val id: String,
     val name: String,
     val location: String,
     val type: String,
@@ -9,5 +10,5 @@ data class Place(
     val description: String,
     val image: String
 ) {
-    constructor() : this("", "", "", false, 0,"", "")
+    constructor() : this("","", "", "", false, 0,"", "")
 }

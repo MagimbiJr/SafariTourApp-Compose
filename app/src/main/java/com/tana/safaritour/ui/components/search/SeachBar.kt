@@ -40,10 +40,10 @@ fun SearchBar(
         TextField(
             value = text,
             onValueChange = onTextChange,
-            label = { Text(text = label) },
+            placeholder = { Text(text = label) },
             modifier = modifier
                 .fillMaxWidth(0.85f)
-                .height(dimensionResource(id = R.dimen.text_field_height)),
+                .height(50.dp),
             colors = textFieldColors,
             shape = TextFieldShape
         )
@@ -51,7 +51,7 @@ fun SearchBar(
         Card(
             modifier = modifier
                 .clickable { onSearch(text) }
-                .height(dimensionResource(id = R.dimen.text_field_height)),
+                .height(50.dp),
             shape = ButtonShape,
             backgroundColor = MaterialTheme.colors.primary
         ) {

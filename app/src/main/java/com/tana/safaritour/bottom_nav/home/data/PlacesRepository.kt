@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface PlacesRepository {
     val places: MutableLiveData<List<Place>>
     val popularPlaces: MutableLiveData<List<Place>>
-    val loading: MutableLiveData<Boolean>
+    var loading: Boolean
     //val errorMessage: MutableLiveData<String>
 
     suspend fun places()

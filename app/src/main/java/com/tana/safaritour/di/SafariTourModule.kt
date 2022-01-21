@@ -47,7 +47,7 @@ object SafariTourModule {
         db: FirebaseFirestore,
         places: MutableLiveData<List<Place>>,
         popularPlaces: MutableLiveData<List<Place>>,
-        loading: MutableLiveData<Boolean>,
+        loading: Boolean,
         //errorMessage: MutableLiveData<String>
     ): PlacesRepository {
         return PlacesRepositoryImpl(
@@ -79,24 +79,23 @@ object SafariTourModule {
 //    }
 
     @Provides
+    fun provideLoading(): Boolean {
+        return false
+    }
+
+    @Provides
     fun provideCurrentUser(): MutableLiveData<FirebaseUser?> {
         return MutableLiveData()
     }
 
     @Provides
-    @Named("Places")
+    //@Named("Places")
     fun providePlaces(): MutableLiveData<List<Place>> {
         return MutableLiveData(listOf())
     }
 
-    @Provides
-    //@Named("Popular Places")
-    fun providePopularPlaces(): MutableLiveData<List<Place>> {
-        return MutableLiveData(listOf())
-    }
-
-    @Provides
-    fun provideLoading(): MutableLiveData<Boolean> {
-        return MutableLiveData()
-    }
+//    @Provides
+//    fun provideLoading(): MutableLiveData<Boolean> {
+//        return MutableLiveData()
+//    }
 }

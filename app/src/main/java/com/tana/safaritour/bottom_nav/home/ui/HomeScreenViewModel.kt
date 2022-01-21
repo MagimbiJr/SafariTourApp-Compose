@@ -22,13 +22,22 @@ class HomeScreenViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HomeScreenUiState())
     val uiState = _uiState.asStateFlow()
 
+    val placesStateFlow = MutableStateFlow<FirestoreResponse?>(null)
+
     init {
         viewModelScope.launch {
+
+            _uiState.value = _uiState.value.copy(
+                isLoading = repository.loading
+            )
+
             Log.d("TAG", "places: ${repository.places()}")
             _uiState.value = _uiState.value.copy(
+                //isLoading = repository.loading,
                 places = repository.places,
                 //popularPlaces = repository.popularPlaces
             )
         }
     }
+
 }
