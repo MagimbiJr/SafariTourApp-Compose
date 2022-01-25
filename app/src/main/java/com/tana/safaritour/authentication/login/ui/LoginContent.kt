@@ -1,10 +1,13 @@
 package com.tana.safaritour.authentication.login.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -31,6 +34,7 @@ import com.tana.safaritour.ui.theme.SafariTourTheme
 @Composable
 fun LoginContent(
     loginUiState: LoginUiState,
+    scrollState: ScrollState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginButtonClicked: () -> Unit,
@@ -47,6 +51,7 @@ fun LoginContent(
         } else {
             Contents(
                 modifier = modifier,
+                scrollState = scrollState,
                 loginUiState = loginUiState,
                 onEmailChanged = onEmailChanged,
                 onPasswordChanged = onPasswordChanged,
@@ -60,16 +65,19 @@ fun LoginContent(
 @Composable
 private fun Contents(
     modifier: Modifier,
+    scrollState: ScrollState,
     loginUiState: LoginUiState,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
     onLoginButtonClicked: () -> Unit,
     onCreateAccountButtonClicked: () -> Unit
 ) {
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp)
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -201,11 +209,12 @@ fun LoginContentPreview() {
     val uiState = LoginUiState(
         credentials = LoginCredential(password = "1234567"),
         errorMessage = "Something went wrong",
-
     )
+    val scrollState = rememberScrollState()
     SafariTourTheme() {
         Surface {
             LoginContent(
+                scrollState = scrollState,
                 loginUiState = uiState,
                 onEmailChanged = {},
                 onPasswordChanged = {},

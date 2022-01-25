@@ -1,5 +1,6 @@
 package com.tana.safaritour.navigation.navgraph
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.material.ScaffoldState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -16,7 +17,8 @@ fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
     systemUiController: SystemUiController,
     scaffoldState: ScaffoldState,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    scrollState: ScrollState,
 ) {
     navigation(AuthRoutes.Landing.route, "authentication") {
         composable(AuthRoutes.Landing.route) {
@@ -27,8 +29,11 @@ fun NavGraphBuilder.authNavGraph(
         }
         composable(AuthRoutes.Login.route) {
             LoginScreen(
+                scrollState = scrollState,
                 onNavigate = {
-                    navController.navigate(it.route)
+                    navController.navigate(it.route) {
+                        popUpTo(AuthRoutes.Landing.route)
+                    }
                 },
                 systemUiController = systemUiController
             )
@@ -36,10 +41,13 @@ fun NavGraphBuilder.authNavGraph(
         composable(AuthRoutes.SignUp.route) {
             SignUpScreen(
                 systemUiController = systemUiController,
+                scrollState = scrollState,
                 scaffoldState = scaffoldState,
                 coroutineScope = coroutineScope,
                 onNavigate = {
-                    navController.navigate(it.route)
+                    navController.navigate(it.route) {
+                        popUpTo(AuthRoutes.Landing.route)
+                    }
                 }
             )
         }

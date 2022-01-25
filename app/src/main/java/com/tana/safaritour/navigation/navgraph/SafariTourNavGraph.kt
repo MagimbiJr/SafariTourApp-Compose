@@ -1,5 +1,6 @@
 package com.tana.safaritour.navigation.navgraph
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -13,7 +14,8 @@ fun SafariTourNavGraph(
     navController: NavHostController,
     systemUiController: SystemUiController,
     scaffoldState: ScaffoldState,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    scrollState: ScrollState,
 ) {
     val auth = FirebaseAuth.getInstance()
     //val isLoggedIn = (auth.currentUser != null)
@@ -28,7 +30,8 @@ fun SafariTourNavGraph(
             navController = navController,
             systemUiController = systemUiController,
             scaffoldState = scaffoldState,
-            coroutineScope = coroutineScope
+            coroutineScope = coroutineScope,
+            scrollState = scrollState
         )
     }
 }

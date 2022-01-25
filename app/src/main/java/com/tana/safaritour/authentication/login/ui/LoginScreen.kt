@@ -1,5 +1,6 @@
 package com.tana.safaritour.authentication.login.ui
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,7 +18,7 @@ fun LoginScreen(
     onNavigate: (AppUiEvents.Navigate) -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
     systemUiController: SystemUiController,
-    //navController: NavHostController
+    scrollState: ScrollState,
 ) {
     systemUiController.setSystemBarsColor(MaterialTheme.colors.background)
     val loginUiState = viewModel.uiState.collectAsState()
@@ -34,6 +35,7 @@ fun LoginScreen(
 
     LoginContent(
         loginUiState = loginUiState.value,
+        scrollState = scrollState,
         onEmailChanged = viewModel::emailChanged,
         onPasswordChanged = viewModel::passwordChanged,
         onLoginButtonClicked = viewModel::loginButtonClicked,
