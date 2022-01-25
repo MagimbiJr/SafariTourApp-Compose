@@ -1,10 +1,13 @@
 package com.tana.safaritour.authentication.signup.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -30,6 +33,7 @@ import com.tana.safaritour.ui.theme.SafariTourTheme
 @Composable
 fun SignUpContent(
     signUpUiState: SignUpUiState,
+    scrollState: ScrollState,
     onNameChanged: (String) -> Unit,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
@@ -43,18 +47,20 @@ fun SignUpContent(
             .fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        Contents(
-            modifier,
-            signUpUiState,
-            onNameChanged,
-            onEmailChanged,
-            onPasswordChanged,
-            onReTypePasswordChanged,
-            onSignUpButtonClicked,
-            onLoginButtonClicked
-        )
         if (signUpUiState.submitting) {
             CircularProgressIndicator()
+        } else {
+            Contents(
+                modifier = modifier,
+                scrollState = scrollState,
+                signUpUiState = signUpUiState,
+                onNameChanged = onNameChanged,
+                onEmailChanged = onEmailChanged,
+                onPasswordChanged = onPasswordChanged,
+                onReTypePasswordChanged = onReTypePasswordChanged,
+                onSignUpButtonClicked = onSignUpButtonClicked,
+                onLoginButtonClicked = onLoginButtonClicked
+            )
         }
     }
 }
@@ -62,6 +68,7 @@ fun SignUpContent(
 @Composable
 fun Contents(
     modifier: Modifier,
+    scrollState: ScrollState,
     signUpUiState: SignUpUiState,
     onNameChanged: (String) -> Unit,
     onEmailChanged: (String) -> Unit,
@@ -73,7 +80,8 @@ fun Contents(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 12.dp)
+            .verticalScroll(state = scrollState),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -246,10 +254,12 @@ fun UserInputs(
 @Composable
 fun SignUpContentPreview() {
     val uiState = SignUpUiState()
+    val scrollState = rememberScrollState()
     SafariTourTheme {
         Surface() {
             SignUpContent(
                 signUpUiState = uiState,
+                scrollState = scrollState,
                 onNameChanged = {},
                 onEmailChanged = {},
                 onPasswordChanged = {},

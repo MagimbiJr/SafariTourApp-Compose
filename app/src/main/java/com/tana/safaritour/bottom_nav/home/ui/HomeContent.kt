@@ -59,9 +59,16 @@ fun HomeContent(
                     },
                     onSearch = {
                         if (searchText.isNotBlank()) {
-                            Toast.makeText(context, "Your search for $searchText is not implemented yet", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context, "Your search for $searchText is not implemented yet",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            searchText = ""
                         } else {
-                            Toast.makeText(context, "There is nothing to search", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                context, "There is nothing to search",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
                 )

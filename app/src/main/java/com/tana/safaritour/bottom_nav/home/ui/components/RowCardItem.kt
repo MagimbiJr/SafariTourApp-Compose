@@ -11,10 +11,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,21 +63,25 @@ fun RowCardItem(
                 Text(text = place.type)
             }
         }
-        
+
+        var isFavoriteItem by remember { mutableStateOf(place.isFavorite) }
+
         Card(
             modifier = modifier
+                .padding(end = 8.dp, top = 8.dp)
                 .clip(CircleShape)
-                //.align(Alignment.BottomEnd)
                 .align(Alignment.TopEnd)
-                .clickable {  },
-            backgroundColor = Cultured
+                .clickable {
+                    isFavoriteItem = !isFavoriteItem
+                },
+            backgroundColor = if (isFavoriteItem) Color.Red else Cultured
         ) {
             Icon(
                 imageVector = Icons.Filled.FavoriteBorder,
                 contentDescription = null,
                 modifier = modifier
                     .padding(8.dp),
-                tint = RussianViolet
+                tint = if (isFavoriteItem) Color.White else RussianViolet
             )
         }
     }

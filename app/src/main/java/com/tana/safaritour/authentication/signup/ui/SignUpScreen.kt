@@ -1,6 +1,7 @@
 package com.tana.safaritour.authentication.signup.ui
 
 import android.widget.Toast
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -27,9 +28,9 @@ fun SignUpScreen(
     onNavigate: (AppUiEvents.Navigate) -> Unit,
     viewModel: SignUpViewModel = hiltViewModel(),
     systemUiController: SystemUiController,
-    //navHostController: NavHostController,
     scaffoldState: ScaffoldState,
     coroutineScope: CoroutineScope,
+    scrollState: ScrollState,
     modifier: Modifier = Modifier
 ) {
     systemUiController.setSystemBarsColor(color = MaterialTheme.colors.background)
@@ -51,10 +52,11 @@ fun SignUpScreen(
     Scaffold(
         modifier = modifier
             .fillMaxSize(),
-        scaffoldState = scaffoldState
+        scaffoldState = scaffoldState,
     ) {
         SignUpContent(
             signUpUiState = signUpUiState.value,
+            scrollState = scrollState,
             onNameChanged = viewModel::nameChanged,
             onEmailChanged = viewModel::emailChanged,
             onPasswordChanged = viewModel::passwordChanged,
